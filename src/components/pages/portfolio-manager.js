@@ -1,38 +1,42 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import { log } from 'util';
 
 export default class PortfolioManager extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      portfolioItems:[]
+    }
+  }
+
+  getPortfolioItems() {
+    axios.get("https://gustavosalas.devcamp.space/portfolio/portfolio_items", 
+    { withCredentials: true
+    }).then(response => {
+      this.setState({
+        portfolioItems: [...response.data.portfolio_items]
+      });
+    }).catch(error => {
+      console.log('error in getPortfolioItems', error)
+    })
+  }
+
+  componentDidMount() {
+    this.getPortfolioItems();
+  }
+
   render() {
     return (
-      <div>
-      
-      <form >
-        <input 
-          type="text"
-          name="Portfolio item"
-          placeholder="Portfolio Item Name"
-          />
+      <div className="portfolio-manager-wrapper">
+          <div className="left-column">
+            <h1>Portfolio form...</h1>
+          </div>
 
-        <input 
-          type="url"
-          name="url"
-          placeholder="URL"
-          />
-        
-        <input 
-          type="text"
-          name="position"
-          placeholder="Position"
-          />
-
-        <label for="options" />
-        <select id="options" name="options">
-          <option value="eCommerce"></option>
-          <option value="Scheduling"></option>
-          <option value="Enterprise"></option>
-        </select>
-
-
-      </form>
+          <div className="right-column">
+            <h1>Portfolio sidebar...</h1>
+          </div>
       </div>
     );
   }
